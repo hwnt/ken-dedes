@@ -23,6 +23,7 @@ first you have to env variable `DB_ROOT_PASSWORD=your-own-pw`, `DB_USER=your-use
 after DB instance live, you can run this code by python command:
 
 ```
+    $ pip install -r requirements // install the required module in python environment
     $ python3 run.py db migrate // if you dont have the table of db, you can migrate first
     $ python3 run.py 
 ```
