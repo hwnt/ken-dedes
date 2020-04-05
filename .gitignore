@@ -1,0 +1,14 @@
+# docker compose
+docker-compose.yml
+
+# environment variable
+.env 
+
+# logging
+storage/log/*.log*
+
+# pycache folder
+__pycache__/
+
+# vscode
+.vscode

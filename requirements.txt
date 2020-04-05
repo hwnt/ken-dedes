@@ -1,0 +1,16 @@
+flask
+flask-restful
+flask-sqlalchemy
+pymysql
+flask-migrate
+flask-script
+flask-jwt-extended
+requests
+pytest
+flask-cors
+pytest-cov
+coverage
+mock
+passlib
+python-dotenv
+werkzeug==0.16.0
