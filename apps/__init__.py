@@ -1,4 +1,5 @@
 from flask import Flask, request
+import sys
 import json
 import os
 import config
@@ -18,45 +19,50 @@ CORS(app)
 
 app.config['APP_DEBUG'] = True
 
-################################
 # JWT
-################################
-app.config['JWT_SECRET_KEY'] = 'A28s0(@2s909s0s90s90s9s09s)'
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=30)
+app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_SECRET_KEY', 'jd8&xusyJx6')
+
+try:
+    env = os.environ.get('FOR_DEV', 0)
+    if env == '1':
+        app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=30)   
+        app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=30)
+    else:
+        app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=5)   
+        app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=30)
+
+except Exception as e:
+    raise e
 
 jwt = JWTManager(app)
 
-
+# authorization for admin only
 def adminRequired(fn):
     @wraps(fn)
     def wrapper(*args, **kwargs):
         verify_jwt_in_request()
         claims = get_jwt_claims()
-        if claims['role']:
+        if claims['role'] == 2:
             return fn(*args, **kwargs)
         else:
             return {'status': 'Forbidden', 'message': 'admin only'}, 403
     return wrapper
 
-
-def userRequired(fn):
+# authorization for user & provider
+def nonAdminRequired(fn):
     @wraps(fn)
     def wrapper(*args, **kwargs):
         verify_jwt_in_request()
         claims = get_jwt_claims()
-        if not claims['role']:
+        if claims['role'] == 1 | claims['role'] == 0:
             return fn(*args, **kwargs)
         else:
-            return {'status': 'Forbidden', 'message': 'user only'}, 403
+            return {'status': 'Forbidden', 'message': 'provider only'}, 403
     return wrapper
-####################
+
 # Database
-#############
-
-
 try:
     env = os.environ.get('FLASK_ENV', 'development')
-    # env = 'testing'
     if env == 'testing':
         app.config.from_object(config.TestingConfig)
     else:
@@ -68,15 +74,12 @@ except Exception as e:
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['PROPAGATE_EXCEPTIONS'] = True
 
-
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
 
-#########################################
 # Middlewares
-#########################################
 @app.after_request
 def after_request(response):
     try:
@@ -93,5 +96,11 @@ def after_request(response):
     )
     return response
 
+
+from apps.users.resources import bp_users
+from apps.auth import bp_auth
+
+app.register_blueprint(bp_auth, url_prefix='/v1/auth')
+app.register_blueprint(bp_users, url_prefix='/v1/user')
 
 db.create_all()
