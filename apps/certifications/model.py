@@ -1,6 +1,5 @@
 from apps import db
 from flask_restful import fields
-import re
 
 
 class Certifications(db.Model):
