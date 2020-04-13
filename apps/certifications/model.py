@@ -37,7 +37,6 @@ class Certifications(db.Model):
         The data already validated on the resources function
 
         Args:
-            id: an integer of certification's id
             name: a string of certification's name
             issuer: a string of issuer who issued the certification.
             details: a string that explains the certification.

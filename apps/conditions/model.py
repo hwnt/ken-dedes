@@ -34,7 +34,6 @@ class Conditions(db.Model):
         The data already validated on the resources function
 
         Args:
-                id: an integer of condition's id
                 condition: a string of a condition.
                 details: a string that explain details.
         """
