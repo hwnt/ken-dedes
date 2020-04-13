@@ -15,7 +15,7 @@ class Certifications(db.Model):
         updated_at: a datetime that indicates when the certification last updated
         response_field: a dictionary that will be used to be a guide when extracting data from database's field
     """
-    __tablename__ = "users"
+    __tablename__ = "certifications"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(50), nullable=False)
     issuer = db.Column(db.String(50), nullable=False)

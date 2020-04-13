@@ -18,7 +18,7 @@ class ProviderCertifications(db.Model):
         updated_at: a datetime that indicates when the row last updated
         response_field: a dictionary that will be used to be a guide when extracting data from database's field
     """
-    __tablename__ = "users"
+    __tablename__ = "provider_certifications"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     certification_id = db.Column(db.Integer, db.ForeignKey('certifications.id'), nullable = False)
     provider_id = db.Column(db.Integer, db.ForeignKey('providers.id'), nullable = False)
