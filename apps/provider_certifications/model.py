@@ -46,7 +46,6 @@ class ProviderCertifications(db.Model):
         The data already validated on the resources function
 
         Args:
-                id: an integer of certifications of provider's id
                 certification_id: an integer of a certification's id.
                 provider_id: an integer that provider's id.
                 certification_number: a string that explain the certification number.
