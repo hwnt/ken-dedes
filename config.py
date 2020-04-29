@@ -8,7 +8,7 @@ db_password = os.environ.get('DB_PASSWORD')
 db_uri = os.environ.get('DB_URI')
 db_name_production = os.environ.get('DB_NAME_PRODUCTION')
 db_name_testing = os.environ.get('DB_NAME_TESTING')
-db_port = os.environ.get('DB_PORT')
+db_port = os.environ.get('DB_PORT', '3306')
 
 
 class Config():
