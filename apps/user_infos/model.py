@@ -38,7 +38,7 @@ class UserInfos(db.Model):
     }
 
     def __init__(self, data):
-        """Inits Users with data that user inputted
+        """Inits UserInfos with data that user inputted
 
         The data already validated on the resources function
 

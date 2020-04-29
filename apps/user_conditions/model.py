@@ -38,7 +38,7 @@ class UserConditions(db.Model):
     }
 
     def __init__(self, data):
-        """Inits Users with data that user inputted
+        """Inits UserConditions with data that user inputted
 
         The data already validated on the resources function
 

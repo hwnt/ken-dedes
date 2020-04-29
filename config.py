@@ -8,6 +8,7 @@ db_password = os.environ.get('DB_PASSWORD')
 db_uri = os.environ.get('DB_URI')
 db_name_production = os.environ.get('DB_NAME_PRODUCTION')
 db_name_testing = os.environ.get('DB_NAME_TESTING')
+db_port = os.environ.get('DB_PORT')
 
 
 class Config():
@@ -21,8 +22,8 @@ class DevelopmentConfig(Config):
         SQLALCHEMI_DATABASE_URI: a string that contain information about uri to access development database
     """
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://{}:{}@{}:3306/{}'.format(
-        db_user, db_password, db_uri, db_name_production)
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://{}:{}@{}:{}/{}'.format(
+        db_user, db_password, db_uri,db_port, db_name_production)
 
 
 class TestingConfig(Config):
@@ -32,5 +33,5 @@ class TestingConfig(Config):
         SQLALCHEMI_DATABASE_URI: a string that contain information about uri to access testing database
     """
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://{}:{}@{}:3306/{}'.format(
-        db_user, db_password, db_uri, db_name_testing)
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://{}:{}@{}:{}/{}'.format(
+        db_user, db_password, db_uri,db_port, db_name_testing)
