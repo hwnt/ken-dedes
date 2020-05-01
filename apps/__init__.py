@@ -57,7 +57,19 @@ def nonAdminRequired(fn):
         if claims['role'] == 1 | claims['role'] == 0:
             return fn(*args, **kwargs)
         else:
-            return {'status': 'Forbidden', 'message': 'provider only'}, 403
+            return {'status': 'Forbidden', 'message': 'user only'}, 403
+    return wrapper
+
+# authorization for everyone 
+def everyoneRequired(fn):
+    @wraps(fn)
+    def wrapper(*args, **kwargs):
+        verify_jwt_in_request()
+        claims = get_jwt_claims()
+        if claims['role'] == 1 | claims['role'] == 0 | claims['role'] == 2:
+            return fn(*args, **kwargs)
+        else:
+            return {'status': 'Forbidden', 'message': 'user only'}, 403
     return wrapper
 
 # Database
@@ -99,10 +111,12 @@ def after_request(response):
 
 from apps.users.resources import bp_users
 from apps.auth import bp_auth
+from apps.categories.resources import bp_categories
 
 version = 'v1'
 
 app.register_blueprint(bp_auth, url_prefix=f'/{version}/auth')
 app.register_blueprint(bp_users, url_prefix=f'/{version}/user')
+app.register_blueprint(bp_categories, url_prefix=f'/{version}/category')
 
 db.create_all()
