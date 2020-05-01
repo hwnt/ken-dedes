@@ -61,7 +61,7 @@ def nonAdminRequired(fn):
     return wrapper
 
 # authorization for everyone 
-def everyoneRequired(fn):
+def jwtRequired(fn):
     @wraps(fn)
     def wrapper(*args, **kwargs):
         verify_jwt_in_request()

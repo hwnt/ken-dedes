@@ -1,7 +1,7 @@
 from flask import Blueprint, Response, json
 from flask_restful import Resource, Api, reqparse, marshal, inputs
 from .model import Categories
-from apps import app, db, adminRequired, nonAdminRequired
+from apps import app, db, adminRequired, nonAdminRequired, jwtRequired
 from flask_jwt_extended import jwt_required, get_jwt_claims
 from ..commons import cors_value, cors_status, content_type_json
 
@@ -19,6 +19,7 @@ class CategoriesResource(Resource):
         """Flask-CORS function to make Flask allowing our apps to support cross origin resource sharing (CORS)"""
         return cors_value, cors_status
 
+    # @adminRequired
     def post(self):
         """Post new data to categories table.
 
@@ -57,6 +58,83 @@ class CategoriesResource(Resource):
         app.logger.debug('DEBUG : %s', category)
 
         return marshal(category, Categories.response_fields), 200, content_type_json
+
+    # @jwt_required
+    def get(self, id):
+        """ Gets category by id from categories  table
+        Returns:
+            A dict consist of categories data.
+
+            For example:
+            {
+                "id": 1,
+                "name": "Pijat Bayi",
+                "details": "Pijat Bayi untuk Umur 2 Tahun",
+            }
+
+        """
+        category = Categories.query.get(id)
+
+        return marshal(category, Categories.response_fields), 200, {'Content_Type': 'application/json'}
+
+    # @adminRequired
+    def put(self, id):
+        """ Edits name and or details from a single record in categories table specified by id 
+        Args:
+            name: a string of a name.
+            details: a string that explain details.
+
+        Returns:
+            A dictionary that contains the updated data from the record edited. For example:
+            
+            {
+                "id": 1,
+                "name": "Pijat Bayi",
+                "details": "Pijat Bayi untuk Umur 2 Tahun",
+            }
+
+            Not Found(404): An error occured when the id inputted is not found in the table
+            Bad Request(400): An error occured when the data inputted is null
+        """
+        parser = reqparse.RequestParser()
+        parser.add_argument('name', location='json', required=False)
+        parser.add_argument('details', location='json', required=False)
+        args = parser.parse_args()
+
+        category = Categories.query.get(id)
+        admin = get_jwt_claims()
+        if category is None:
+            return {'status': 'Not Found'}, 404, {'Content_Type': 'application/json'}
+
+        if args['name'] is not None:
+            category.name = args['name']
+
+        if args['details'] is not None:
+            category.details = args['details']
+
+        db.session.commit()
+
+        return marshal(category, Categories.response_fields), 200, {'Content_Type': 'application/json'}
+
+    # @adminRequired
+    def delete(self, id):
+        """Hard delete a single record from categories table 
+        Args (located in function's parameter): 
+            id: An integer of category's id which want to be deleted
+        Returns:
+            A dictionary of key 'status' which have value of sucess message. For example:
+            {"Status": "The data with id 3 is deleted"}
+        Raise:
+            Not Found(404): An error occured when the id inputted is not found in the table
+        """
+        category = Categories.query.get(id)
+        admin = get_jwt_claims()
+        if category is None:
+            return {'status': 'Not Found'}, 404, {'Content_Type': 'application/json'}
+
+        db.session.delete(category)
+        db.session.commit()
+        return {"Status": "The data with id {} is deleted".format(id)}, 200, {'Content_Type': 'application/json'}
 
 
 class CategoriesList(Resource):
