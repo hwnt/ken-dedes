@@ -100,7 +100,9 @@ def after_request(response):
 from apps.users.resources import bp_users
 from apps.auth import bp_auth
 
-app.register_blueprint(bp_auth, url_prefix='/v1/auth')
-app.register_blueprint(bp_users, url_prefix='/v1/user')
+version = 'v1'
+
+app.register_blueprint(bp_auth, url_prefix=f'/{version}/auth')
+app.register_blueprint(bp_users, url_prefix=f'/{version}/user')
 
 db.create_all()
