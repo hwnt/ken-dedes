@@ -1,5 +1,6 @@
 from apps import db
 from flask_restful import fields
+from datetime import date
 
 
 class Providers(db.Model):
@@ -10,20 +11,21 @@ class Providers(db.Model):
         id: an integer of provider's id
         user_id: a string of provider's user id
         name: a string of provider's name
-        birthday: a date of provider's birthday
+        birthday: a string of provider's birthday
         experience: a string of provider's experience year/
         almamater: a string of provider's almamater.
         details: a string that explain details.
         role: a string that indicates provider role. such as: doctor, midwife, etc.
+        permit_number: a string that shows the provider's legality of permission.
         created_at: a datetime that indicates when the account created
         updated_at: a datetime that indicates when the account last updated
         response_field: a dictionary that will be used to be a guide when extracting data from database's field
     """
     __tablename__ = "providers"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), unique=True, nullable=False)
     name = db.Column(db.String(50), nullable=False)
-    birthday = db.Column(db.Date, nullable=False)
+    birthday = db.Column(db.String(30), nullable=False)
     experience = db.Column(db.String(30), nullable=False)
     almamater = db.Column(db.String(30), nullable=False)
     details = db.Column(db.String(30), nullable=False)
@@ -37,7 +39,7 @@ class Providers(db.Model):
         'id': fields.Integer,
         'user_id': fields.Integer,
         'name': fields.String,
-        'birthday': fields.DateTime,
+        'birthday': fields.String,
         'experience': fields.String,
         'almamater': fields.String,
         'details': fields.String,
@@ -53,11 +55,12 @@ class Providers(db.Model):
         Args:
                 user_id: a string of provider's user id
                 name: a string of provider's name
-                birthday: a date of provider's birthday
+                birthday: a string of provider's birthday
                 experience: a string of provider's experience year/
                 almamater: a string of provider's almamater.
                 details: a string that explain details.
                 role: a string that indicates user role. such as: doctor, midwife, etc.
+                permit_number: a string that shows the provider's legality of permission.
         """
         self.user_id = data['user_id']
         self.name = data['name']
@@ -66,6 +69,4 @@ class Providers(db.Model):
         self.almamater = data['almamater']
         self.details = data['details']
         self.role = data['role']
-        self.permit_number = data['permit_number']
-
-
+        self.permit_number = data['permit_number'] 
