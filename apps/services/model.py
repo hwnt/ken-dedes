@@ -29,7 +29,7 @@ class Services(db.Model):
     response_fields = {
         'id': fields.Integer,
         'provider_id': fields.Integer,
-        'condition_id': fields.Integer,
+        'category_id': fields.Integer,
         'price': fields.Integer,
         'transport_price': fields.Integer,
     }

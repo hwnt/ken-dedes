@@ -113,6 +113,7 @@ from apps.users.resources import bp_users
 from apps.auth import bp_auth
 from apps.categories.resources import bp_categories
 from apps.providers.resources import bp_providers
+from apps.services.resource import bp_services
 
 version = 'v1'
 
@@ -120,5 +121,6 @@ app.register_blueprint(bp_auth, url_prefix=f'/{version}/auth')
 app.register_blueprint(bp_users, url_prefix=f'/{version}/user')
 app.register_blueprint(bp_categories, url_prefix=f'/{version}/category')
 app.register_blueprint(bp_providers, url_prefix=f'/{version}/provider')
+app.register_blueprint(bp_services, url_prefix=f'/{version}/service')
 
 db.create_all()
