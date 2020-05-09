@@ -25,7 +25,7 @@ class UserConditionsResource(Resource):
 
     @jwtRequired
     def post(self):
-        """Post new data to providers table.
+        """Post new data to user_conditions table.
 
         Retrieve data from user input located in JSON, validate the data, then post the data to users tables.
 
@@ -82,9 +82,9 @@ class UserConditionsResource(Resource):
 
     @jwtRequired
     def get(self):
-        """ Gets category by id from services  table
+        """ Gets category by id from user_conditions  table
         Returns:
-            A dict consist of services data.
+            A dict consist of user_conditions data.
 
             For example:
             [
