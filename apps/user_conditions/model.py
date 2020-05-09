@@ -33,7 +33,7 @@ class UserConditions(db.Model):
         'user_id': fields.Integer,
         'condition_id': fields.Integer,
         'condition': fields.String,
-        'condition_detail': fields.String,
+        'condition_details': fields.String,
         'user_answer': fields.String,
     }
 

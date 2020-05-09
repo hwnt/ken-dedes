@@ -25,8 +25,8 @@ app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_SECRET_KEY', 'jd8&xusyJx6')
 try:
     env = os.environ.get('FOR_DEV', 0)
     if env == '1':
-        app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=30)   
-        app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=30)
+        app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=360)   
+        app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=360)
     else:
         app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=5)   
         app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=30)
@@ -66,7 +66,7 @@ def jwtRequired(fn):
     def wrapper(*args, **kwargs):
         verify_jwt_in_request()
         claims = get_jwt_claims()
-        if claims['role'] == 1 | claims['role'] == 0 | claims['role'] == 2:
+        if claims['role'] != None:
             return fn(*args, **kwargs)
         else:
             return {'status': 'Forbidden', 'message': 'user only'}, 403
@@ -115,6 +115,7 @@ from apps.categories.resources import bp_categories
 from apps.providers.resources import bp_providers
 from apps.services.resource import bp_services
 from apps.conditions.resource import bp_conditions
+from apps.user_conditions.resource import bp_user_conditions
 
 version = 'v1'
 
@@ -124,5 +125,6 @@ app.register_blueprint(bp_categories, url_prefix=f'/{version}/category')
 app.register_blueprint(bp_providers, url_prefix=f'/{version}/provider')
 app.register_blueprint(bp_services, url_prefix=f'/{version}/service')
 app.register_blueprint(bp_conditions, url_prefix=f'/{version}/condition')
+app.register_blueprint(bp_user_conditions, url_prefix=f'/{version}/user-condition')
 
 db.create_all()
