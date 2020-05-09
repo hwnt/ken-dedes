@@ -19,7 +19,7 @@ class UserConditionsResource(Resource):
     def __init__(self):
         pass
 
-    def options(self, id=None):
+    def options(self):
         """Flask-CORS function to make Flask allowing our apps to support cross origin resource sharing (CORS)"""
         return cors_value, cors_status
 
