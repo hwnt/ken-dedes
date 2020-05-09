@@ -116,6 +116,7 @@ from apps.providers.resources import bp_providers
 from apps.services.resource import bp_services
 from apps.conditions.resource import bp_conditions
 from apps.user_conditions.resource import bp_user_conditions
+from apps.user_infos.resource import bp_user_infos
 
 version = 'v1'
 
@@ -126,5 +127,6 @@ app.register_blueprint(bp_providers, url_prefix=f'/{version}/provider')
 app.register_blueprint(bp_services, url_prefix=f'/{version}/service')
 app.register_blueprint(bp_conditions, url_prefix=f'/{version}/condition')
 app.register_blueprint(bp_user_conditions, url_prefix=f'/{version}/user-condition')
+app.register_blueprint(bp_user_infos, url_prefix=f'/{version}/user-info')
 
 db.create_all()

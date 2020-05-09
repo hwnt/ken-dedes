@@ -18,7 +18,7 @@ class UserInfos(db.Model):
         response_field: a dictionary that will be used to be a guide when extracting data from database's field
     """
     __tablename__ = "user_infos"
-    id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True, autoincrement=True)
+    id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True, autoincrement=True)
     address = db.Column(db.String(100), nullable = True)
     photo = db.Column(db.String(100), nullable = False)
     birthdate = db.Column(db.String(100), nullable=False)
